@@ -3,6 +3,7 @@ const Dept = require("../models/dept");
 const Staff = require("../models/staff");
 const ErrorHandler = require("../utils/errorHandler");
 
+
 const authMid = {
   authRequired: (req, res, next) => {
     const token = req.cookies.jwt_token;
