@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include("./sections/head.ejs") %>
+</head>
+
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+
+  <div x-data="setup()" :class="{ 'dark': isDark }">
+    <div
+      class="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-white dark:bg-gray-700 text-black dark:text-white">
+
+      <!-- Header -->
+      <%- include("./sections/header.ejs") %>
+        <!-- ./Header -->
+
+        <!-- Sidebar -->
+        <%- include("./sections/sidebar.ejs") %>
+        <!-- ./Sidebar -->
+
+          <div class="h-full ml-14 mt-14 mb-10 md:ml-64">
+            <!-- Statistics Cards -->
+            <%- include("./sections/stat-card.ejs") %> 
+            <!-- ./Statistics Cards -->
+
+            <!-- Department Edit Form -->
+            <%- include("./sections/department-edit-form.ejs") %> 
+            <!-- ./Department Edit Form -->
+
+            <!-- External resources -->
+            <%- include("./sections/external-links.ejs") %>
+            <!-- ./External resources -->
+          </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <%- include("./sections/scripts.ejs") %>   
+  <!-- Scripts -->
+  <% const DeptId = Dept.id %>
+  <script>
+    // console.log(document.querySelector("#recruiting_toggle").value = "on");
+    // document.querySelector("#recruiting_toggle").value = true
+    // console.log(document.querySelector("#recruiting_toggle").checked = true);
+    // document.querySelector("#recruiting_toggle").checked = true
+    function convertFD2JSON(formData) {
+            let obj = {};
+            formData.forEach(function(value, key) {
+                obj[key] = value;
+            })
+            console.log(obj);
+            return obj;
+        }
+        document.querySelector("form").addEventListener("submit", handleForm);
+        function handleForm(ev) {
+            ev.preventDefault();
+            let myForm = ev.target;
+            const data = convertFD2JSON(new FormData(myForm));
+            const newFormData = {
+              recruiting: true,
+              pic: data.pic,
+              name: data.name,
+              tagline: data.tagline,
+              description: data.description,
+            }
+            console.log(newFormData);
+            // after banckend chnage update this
+            fetch("/dashboard/department/<%= DeptId %>/edit", {
+              body: JSON.stringify(newFormData),
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              }
+            })
+            .then((some) => { return some.json() })
+            .then(async (res) => {
+              document.querySelector('form').reset();
+              // console.log(res)
+              // instanciate new modal
+              var modal = new tingle.modal({
+                footer: true,
+                stickyFooter: false,
+                closeMethods: ['button', 'escape', 'overlay'],
+                closeLabel: "Close",
+                cssClass: ['custom-class-1', 'custom-class-2'],
+              });
+
+              // set content
+              modal.setContent( `<h1> ${res.message} </h1>` );
+
+              // add button
+              modal.addFooterBtn('close', 'tingle-btn tingle-btn--primary tingle-btn--pull-right', function() {
+                // here goes some logic
+                modal.close();
+                location.reload();
+              });
+              modal.open()
+            })
+            .catch((err) => {
+                // instanciate new modal
+                var modal = new tingle.modal({
+                      footer: true,
+                      stickyFooter: false,
+                      closeMethods: ['button', 'escape'],
+                      closeLabel: "Close",
+                      cssClass: ['custom-class-1', 'custom-class-2'],
+                  });
+  
+                  // set content
+                  modal.setContent( `<h1> ${res.message} </h1>` );
+      
+  
+                  // add button
+                  modal.addFooterBtn('close', 'tingle-btn tingle-btn--danger tingle-btn--pull-right', function() {
+                      // here goes some logic
+                      modal.close();
+                  });
+
+                  modal.open()
+            })
+        }
+        
+  </script>
+
+</body>
+
+</html>

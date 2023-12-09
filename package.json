@@ -1,0 +1,46 @@
+{
+  "name": "ecell-website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build-css": "postcss ./src/styles.css -o ./public/css/styles.css",
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "prod": "postcss ./public/css/styles.css -o ./public/css/styles1.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "autoprefixer": "^10.2.5",
+    "bcrypt": "^5.0.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "ejs": "^3.1.6",
+    "ejs-mate": "^4.0.0",
+    "express": "^4.17.1",
+    "express-jwt": "^8.4.1",
+    "express-session": "^1.17.2",
+    "googleapis": "^82.0.0",
+    "joi": "^17.4.0",
+    "jsonwebtoken": "^9.0.2",
+    "moment": "^2.29.1",
+    "mongodb": "^6.3.0",
+    "mongoose": "^5.12.10",
+    "nodemailer": "^6.6.1",
+    "path": "^0.12.7",
+    "sanitize-html": "^2.4.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^4.0.3",
+    "cssnano": "^5.0.7",
+    "dotenv": "^10.0.0",
+    "nodemon": "^2.0.12",
+    "postcss": "^8.3.6",
+    "postcss-cli": "^8.3.1",
+    "tailwindcss": "^2.2.7"
+  }
+}
